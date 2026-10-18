@@ -36,6 +36,18 @@ python3 -m http.server 8765 --bind 127.0.0.1
 Open [the homepage](http://127.0.0.1:8765/), [the technical blog](http://127.0.0.1:8765/blog/),
 or [the verification database](http://127.0.0.1:8765/results/).
 
+### Research draft in this fork
+
+The independent draft [Reasoning About Redundant Synchronization](blog/redundant-synchronization/)
+starts with Section 1.1, covering programs, inputs, executions, contracts, and candidate edits.
+Read it at [the local article URL](http://127.0.0.1:8765/blog/redundant-synchronization/).
+Its finite double-buffer illustration is separate from the verifier and reports no new hardware results.
+The original technical blog is unchanged. The research branch is not a deployment target.
+
+The illustration's semantic checks are included in `node --test tests/*.test.mjs`.
+Its model is `js/sync-foundations-model.mjs`; the responsive figures and controls are in
+`js/sync-foundations.mjs` and `css/sync-foundations.css`.
+
 ## Verification database
 
 `/results/` loads [the live results JSON](https://github.com/gpu-verifier/sentryward/blob/main/examples/results.json)
