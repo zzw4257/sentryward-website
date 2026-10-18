@@ -20,5 +20,11 @@ Run the repository checks documented in the root README. Browser checks should c
 both input sizes, all three edits, a successful execution of a rejected candidate,
 the violating execution, range-keyboard controls, reduced motion, and 320px layout.
 
-This branch is for fork review. Do not merge into a publishing branch, run the Pages
-workflow, or open an upstream PR as part of preparing this draft.
+The personal reader copy is hosted at https://sentryward.z2w.tech/ through the
+dedicated `sentryward-research` Vercel project. It contains only this article and
+the required static assets, with the upstream license retained. The domain root
+opens the article; the technical-blog link goes to the original SentryWard blog.
+Publishing is manual and separate from GitHub Pages and the older showcase projects.
+
+Keep this branch and PR for fork review. Do not merge into a publishing branch,
+run the Pages workflow, or open an upstream PR as part of preparing this draft.

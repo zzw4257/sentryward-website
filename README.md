@@ -41,8 +41,10 @@ or [the verification database](http://127.0.0.1:8765/results/).
 The independent draft [Reasoning About Redundant Synchronization](blog/redundant-synchronization/)
 starts with Section 1.1, covering programs, inputs, executions, contracts, and candidate edits.
 Read it at [the local article URL](http://127.0.0.1:8765/blog/redundant-synchronization/).
+The personal reader copy is at [sentryward.z2w.tech](https://sentryward.z2w.tech/).
 Its finite double-buffer illustration is separate from the verifier and reports no new hardware results.
-The original technical blog is unchanged. The research branch is not a deployment target.
+The original technical blog is unchanged. The personal copy uses a separate Vercel project;
+it does not use this repository's GitHub Pages publishing workflow.
 
 The illustration's semantic checks are included in `node --test tests/*.test.mjs`.
 Its model is `js/sync-foundations-model.mjs`; the responsive figures and controls are in
