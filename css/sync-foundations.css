@@ -1,0 +1,60 @@
+/* The research draft reuses the blog's typography and paper-like figures. */
+.research-post .research-byline { color: var(--muted); font-size: 14px; margin: 20px 0 26px; }
+.research-post h4 { font-size: 20px; margin-top: 38px; }
+.research-post .site-ready { color: var(--hb); font-weight: 600; }
+.research-post .site-reuse { color: #73513d; font-weight: 600; }
+.research-post .foundation-diagram { width: 100%; }
+.research-post .foundation-diagram svg { display: block; width: 100%; height: auto; overflow: visible; }
+.research-post .foundation-diagram text { font-family: Inter, system-ui, sans-serif; fill: var(--text); font-size: 13px; }
+.research-post .foundation-diagram .figure-secondary { fill: var(--muted); }
+.research-post .foundation-diagram .figure-label { font-size: 14px; font-weight: 600; }
+.research-post .foundation-diagram .event-node { fill: #f6f8fa; stroke: #b6c2cd; stroke-width: 1; }
+.research-post .foundation-diagram .order-link { fill: none; stroke: #737e89; stroke-width: 1.3; }
+.research-post .foundation-diagram .wait-link { stroke: var(--hb); stroke-width: 1.7; }
+.research-post .foundation-diagram .wait-label { fill: var(--hb); }
+.research-post .foundation-diagram .lane { stroke: var(--rule); stroke-width: 1; }
+.research-post .foundation-diagram .position-guide { stroke: #a7b4c1; stroke-width: 1; }
+.research-post .foundation-diagram .event-dot { fill: #fff; stroke: #b2bfcc; stroke-width: 1.3; }
+.research-post .foundation-diagram .event-done { fill: #dbe8f5; stroke: var(--hb); }
+.research-post .foundation-diagram .event-current { fill: var(--hb); stroke: var(--hb); }
+.research-post .foundation-diagram .event-failed { fill: #f4dfe1; stroke: var(--bad); }
+.research-post .foundation-diagram .event-future { opacity: .5; }
+.research-post .execution-explorer { margin: 32px 0 36px; }
+.research-post .execution-explorer h5 { font-size: 18px; font-weight: 600; margin: 0 0 16px; }
+.research-post .explorer-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 18px; }
+.research-post .explorer-fields label { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 500; min-width: 0; }
+.research-post .explorer-fields label:last-child { grid-column: 1 / -1; }
+.research-post select { width: 100%; min-width: 0; font: inherit; font-size: 15px; color: var(--text); border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; padding: 9px 30px 9px 10px; }
+.research-post .example-verdict { margin: 16px 0; font-size: 15px; line-height: 1.6; }
+.research-post .example-verdict[data-result="violated"] { color: var(--bad); }
+.research-post .execution-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 12px; }
+.research-post .execution-controls button { font: inherit; font-size: 14px; padding: 7px 12px; border: 1px solid #cbd5e1; border-radius: 4px; color: var(--text); background: #fff; cursor: pointer; }
+.research-post .execution-controls button:hover:not(:disabled) { background: var(--code-bg); }
+.research-post .execution-controls button:disabled { opacity: .45; cursor: default; }
+.research-post .position-label { margin-left: auto; font-size: 14px; font-variant-numeric: tabular-nums; }
+.research-post #execution-position { flex: 1 0 100%; width: 100%; accent-color: var(--hb); margin: 6px 0; }
+.research-post .execution-event { font-size: 15px; background: var(--step-bg); border-radius: 5px; padding: 10px 13px; line-height: 1.55; min-height: 65px; margin: 0 0 8px; }
+.research-post .slot-state { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 8px 0 12px; }
+.research-post .slot-state > div { padding: 8px 0; border-top: 2px solid #ccd9e7; font-size: 14px; }
+.research-post .slot-state strong { display: block; font-size: 14px; font-weight: 600; }
+.research-post .execution-check { font-size: 14px; line-height: 1.55; min-height: 44px; margin: 8px 0 0; }
+.research-post .execution-check[data-result="violated"] { color: var(--bad); }
+.research-post .contract-table-wrap { max-width: 100%; }
+.research-post .contract-table { width: 100%; font-size: 15px; }
+.research-post .contract-table caption { text-align: left; font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+.research-post .contract-table .satisfied { color: var(--good); }
+.research-post .contract-table .violated { color: var(--bad); }
+.research-post footer { font-size: 14px; }
+@media (max-width: 560px) {
+  .research-post article { padding-left: 20px; padding-right: 20px; }
+  .research-post h1 { font-size: 32px; }
+  .research-post h2 { font-size: 25px; }
+  .research-post h3 { font-size: 21px; }
+  .research-post .explorer-fields { grid-template-columns: 1fr; }
+  .research-post select { font-size: 16px; }
+  .research-post .execution-controls button { min-height: 44px; }
+  .research-post .execution-event { min-height: 92px; }
+  .research-post .contract-table { font-size: 13px; }
+  .research-post .contract-table th, .research-post .contract-table td { padding-left: 5px; padding-right: 5px; overflow-wrap: anywhere; }
+  .research-post .contract-equation { font-size: 14px; }
+}
