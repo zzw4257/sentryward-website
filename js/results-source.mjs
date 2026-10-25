@@ -4,9 +4,7 @@ import { readInputContent } from './kernel-inputs.mjs?v=20261015-live';
 
 export const REPOSITORY = 'https://github.com/gpu-verifier/sentryward';
 const RAW = 'https://raw.githubusercontent.com/gpu-verifier/sentryward';
-export const RESULTS_PATH = 'latest.json';
-export const RESULTS_URL = `${RAW}/results/${RESULTS_PATH}`;
-export const RESULTS_PAGE = `${REPOSITORY}/blob/results/${RESULTS_PATH}`;
+export const RESULTS_URL = `${RAW}/results/latest.json`;
 const HASH = /^[0-9a-f]{64}$/;
 const REVISION = /^[0-9a-f]{40}$/;
 
@@ -82,13 +80,9 @@ export function embeddedStudy(data) {
   return validateStudy({ ...data.synchronization_removal_study, results }, new Set(data.results.map(row => row.name)));
 }
 
-// Legacy string paths remain supported for archived callers. Published snapshots
-// always pass a descriptor and publication, so no link can drift with main.
 export function sourceFileURL(file, raw = false, publication = null, report = false) {
-  if (typeof file === 'string') file = { path: file };
   if (!file || typeof file !== 'object') throw new Error('Missing source file.');
   const path = encodedPath(file.path);
-  const revision = file.revision;
   const snapshotReport = report && typeof publication?.run_id === 'string' &&
     /^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(publication.run_id) && HASH.test(publication.snapshot_id) &&
     file.path.startsWith(`runs/${publication.run_id}/${publication.snapshot_id}/reports/`) && file.path.endsWith('/report.md');
@@ -96,28 +90,19 @@ export function sourceFileURL(file, raw = false, publication = null, report = fa
   if (explicit) {
     const url = httpsURL(explicit);
     if (publication && url.href.startsWith(evidencePrefix(publication.evidence_base_url))) return url.href;
-    if (REVISION.test(revision)) {
-      const rawURL = `${RAW}/${revision}/${path}`;
-      const blobURL = `${REPOSITORY}/blob/${revision}/${path}`;
-      if (url.href === rawURL || url.href === blobURL) return raw ? rawURL : blobURL;
-    }
-    if (snapshotReport) {
-      const rawURL = `${RAW}/results/${path}`;
-      const blobURL = `${REPOSITORY}/blob/results/${path}`;
-      if (url.href === rawURL || url.href === blobURL) return raw ? rawURL : blobURL;
-    }
+  }
+  const ref = REVISION.test(file.revision) ? file.revision : snapshotReport ? 'results' : null;
+  if (!ref) throw new Error('Source file is not pinned to a commit or published snapshot.');
+  const rawURL = `${RAW}/${ref}/${path}`;
+  const blobURL = `${REPOSITORY}/blob/${ref}/${path}`;
+  if (explicit && explicit !== rawURL && explicit !== blobURL) {
     throw new Error('File URL is outside the published evidence or pinned repository source.');
   }
-  if (snapshotReport) {
-    return raw ? `${RAW}/results/${path}` : `${REPOSITORY}/blob/results/${path}`;
-  }
-  if (publication && !REVISION.test(revision)) throw new Error('Snapshot source file is not pinned to a commit.');
-  if (revision !== undefined && !REVISION.test(revision)) throw new Error('Invalid source revision.');
-  return raw ? `${RAW}/${revision || 'main'}/${path}` : `${REPOSITORY}/blob/${revision || 'main'}/${path}`;
+  return raw ? rawURL : blobURL;
 }
 
 export async function loadInputConfig(file, fetcher = fetch, publication = null) {
-  if (publication && !HASH.test(file?.sha256)) throw new Error('Snapshot input is missing its SHA-256.');
+  if (!HASH.test(file?.sha256)) throw new Error('Snapshot input is missing its SHA-256.');
   const response = await fetcher(sourceFileURL(file, true, publication), { cache: 'no-store', credentials: 'omit', redirect: 'error' });
   if (!response.ok) throw new Error(`Input unavailable (HTTP ${response.status}).`);
   return readInputContent(await response.text(), file.sha256);

@@ -121,23 +121,27 @@ test('both synchronization scenarios come from the live records', () => {
   assert.throws(() => embeddedStudy(invalid));
 });
 
-test('input configurations load from the public source and verify hashes when provided', async () => {
-  const file = { path: 'examples/kernel/input.json' };
+test('input configurations load from the pinned source and verify their hashes', async () => {
   const content = JSON.stringify({ schema: 'spverify.kernel-input/v1', launch: { grid_dim: [1, 1, 1] } });
+  const file = { path: 'examples/kernel/input.json', revision, sha256: digest(content) };
   const calls = [];
   const fetcher = async (...args) => { calls.push(args); return { ok: true, text: async () => content }; };
   const result = await loadInputConfig(file, fetcher);
   assert.equal(result.content, content);
   assert.deepEqual(result.config.launch.grid_dim, [1, 1, 1]);
-  assert.deepEqual(calls[0], ['https://raw.githubusercontent.com/gpu-verifier/sentryward/main/examples/kernel/input.json', { cache: 'no-store', credentials: 'omit', redirect: 'error' }]);
+  assert.deepEqual(calls[0], [`https://raw.githubusercontent.com/gpu-verifier/sentryward/${revision}/examples/kernel/input.json`, { cache: 'no-store', credentials: 'omit', redirect: 'error' }]);
+  await assert.rejects(loadInputConfig({ ...file, sha256: undefined }, fetcher), /SHA-256/);
   await assert.rejects(loadInputConfig({ ...file, sha256: '0'.repeat(64) }, fetcher));
   await assert.rejects(loadInputConfig(file, async () => ({ ok: false, status: 404 })));
 });
 
 test('source file links stay within the configured repository', () => {
-  assert.equal(sourceFileURL('examples/kernel/input.json'), 'https://github.com/gpu-verifier/sentryward/blob/main/examples/kernel/input.json');
+  const file = { path: 'examples/kernel/input.json', revision };
+  assert.equal(sourceFileURL(file), `https://github.com/gpu-verifier/sentryward/blob/${revision}/${file.path}`);
+  assert.throws(() => sourceFileURL(file.path));
+  assert.throws(() => sourceFileURL({ path: file.path }), /pinned/);
   for (const path of ['', '../secret', '/examples/input.json', 'examples/../input.json', 'https://example.com/input.json', 'examples/a?x', 'examples/a#x']) {
-    assert.throws(() => sourceFileURL(path));
+    assert.throws(() => sourceFileURL({ path, revision }));
   }
 });
 
