@@ -46,7 +46,7 @@ function render(row) {
 }
 function pending() {
   const historical = structuredClone(imported.results.find(row => row.result === 'timeout'));
-  return { name: historical.name, result: historical.result,
+  return { name: historical.name, result: null,
     automation: { state: 'pending', attempted_revision: revision, report_status: 'not_run' },
     provenance: { run_id: 'new-run', source_revision: revision },
     files: { input: { path: historical.files.input.path, sha256: 'c'.repeat(64), revision } }, historical };
